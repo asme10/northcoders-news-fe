@@ -1,8 +1,8 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import { getCommentsByArticleId } from "../api";
 import Navbar from "./Navbar";
+import { getArticles, getCommentsByArticleId } from "./../api";
 
 const ArticleView = () => {
   const { article_id } = useParams();
@@ -12,10 +12,16 @@ const ArticleView = () => {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`https://asme-nc-news-api.onrender.com/api/articles/${article_id}`)
-      .then((response) => {
-        setArticle(response.data.article);
+    getArticles()
+      .then((articles) => {
+        const foundArticle = articles.find(
+          (article) => article.article_id === +article_id
+        );
+        if (foundArticle) {
+          setArticle(foundArticle);
+        } else {
+          setIsError(true);
+        }
         setIsLoading(false);
       })
       .catch((err) => {
@@ -27,7 +33,9 @@ const ArticleView = () => {
       .then((comments) => {
         setComments(comments);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        setIsError(true);
+      });
   }, [article_id]);
 
   if (isLoading) {
@@ -53,13 +61,6 @@ const ArticleView = () => {
       </div>
     );
   }
-  if (!comments) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        <p>comments not found!</p>
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -82,7 +83,18 @@ const ArticleView = () => {
           </div>
         </div>
       </div>
-      
+
+      <div className="container mt-4 mx-auto">
+        <h2>Comments associated with an article</h2>
+        {comments.map((comment) => (
+          <div key={comment.comment_id} className="comment-card">
+            <p>
+              <strong>{comment.author}:</strong>
+            </p>
+            <p>{comment.body}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
