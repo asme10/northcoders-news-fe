@@ -9,3 +9,9 @@ export const getArticles = () => {
     return data.articles;
   });
 };
+
+export const getCommentsByArticleId = (article_id) => {
+  return api.get(`/api/articles/${article_id}/comments`).then(({ data }) => {
+    return data.comments;
+  });
+};
