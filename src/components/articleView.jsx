@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { getCommentsByArticleId } from "../api";
 import Navbar from "./Navbar";
 
 const ArticleView = () => {
   const { article_id } = useParams();
   const [article, setArticle] = useState(null);
+  const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -16,10 +18,16 @@ const ArticleView = () => {
         setArticle(response.data.article);
         setIsLoading(false);
       })
-      .catch((error) => {
+      .catch((err) => {
         setIsError(true);
         setIsLoading(false);
       });
+
+    getCommentsByArticleId(article_id)
+      .then((comments) => {
+        setComments(comments);
+      })
+      .catch((err) => {});
   }, [article_id]);
 
   if (isLoading) {
@@ -45,6 +53,13 @@ const ArticleView = () => {
       </div>
     );
   }
+  if (!comments) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        <p>comments not found!</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -67,6 +82,7 @@ const ArticleView = () => {
           </div>
         </div>
       </div>
+      
     </div>
   );
 };
