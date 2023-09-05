@@ -1,8 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ArticleCard = ({ article }) => {
   return (
-    <div className="card" style={{ width: "24rem" }}>
+    <div className="card" style={{ width: "26rem" }}>
       <img
         src={article.article_img_url}
         className="card-img-top"
@@ -15,9 +16,7 @@ const ArticleCard = ({ article }) => {
         <p className="card-text">{article.created_at}</p>
         <p className="card-text">Comment Count: {article.comment_count}</p>
         <p className="card-text">Votes: {article.votes}</p>
-        <a href="#" className="btn btn-primary">
-          Read More
-        </a>
+        <button className="btn btn-primary">Read More</button>
       </div>
     </div>
   );
