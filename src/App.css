@@ -1,0 +1,63 @@
+/* App.css */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+/* Navbar */
+
+.bg-custom {
+  background-color: #343a40;
+}
+.navbar a.navbar-brand {
+  font-size: 30px !important;
+}
+
+.navbar-nav .nav-item .nav-link {
+  color: white;
+  font-size: 18px;
+}
+
+/* Header */
+.custom-header {
+  background: linear-gradient(
+    to right top,
+    #845ec2,
+    #7058b7,
+    #5d53aa,
+    #4a4c9e,
+    #384691
+  );
+  color: white;
+  padding: 10px 0;
+  height: 360px;
+}
+
+.header-title {
+  font-size: 36px;
+  padding-top: 8rem;
+}
+
+.header-subtitle {
+  font-size: 18px;
+}
+
+/* Home/Search Section */
+.search-title {
+  font-size: 2.2rem;
+}
+
+.search-form {
+  font-size: 18px;
+  display: flex;
+  max-width: 630px;
+}
+
+.form-control {
+  font-size: 1.2rem;
+}
+
+.btn-outline-success {
+  font-size: 1.2rem;
+}
