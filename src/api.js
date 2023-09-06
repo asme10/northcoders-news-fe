@@ -15,3 +15,11 @@ export const getCommentsByArticleId = (article_id) => {
     return data.comments;
   });
 };
+
+export const postArticleVote = (article_id, voteType) => {
+  return api
+    .post(`/api/articles/${article_id}/votes`, { vote: voteType })
+    .then(({ data }) => {
+      return data.article;
+    });
+};

@@ -5,7 +5,7 @@ import { getArticles } from "../api";
 
 const ArticleList = () => {
   const [articles, setArticles] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
@@ -20,35 +20,30 @@ const ArticleList = () => {
       });
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="alert alert-success" role="alert">
-        Loading...
-      </div>
-    );
-  }
-  if (isError) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        Oops, something went wrong!
-      </div>
-    );
-  }
-
   return (
     <section className="container my-5">
-      <div className="row row-cols-1 row-cols-md-3 g-4">
-        {articles.map((article) => (
-          <div className="col mb-4" key={article.article_id}>
-            <Link
-              to={`/article/${article.article_id}`}
-              style={{ textDecoration: "none" }}
-            >
-              <ArticleCard article={article} />
-            </Link>
-          </div>
-        ))}
-      </div>
+      {isLoading ? (
+        <div className="alert alert-success" role="alert">
+          Loading...
+        </div>
+      ) : isError ? (
+        <div className="alert alert-danger" role="alert">
+          Oops, something went wrong!
+        </div>
+      ) : (
+        <div className="d-flex flex-wrap">
+          {articles.map((article) => (
+            <div className="col-md-4 mb-4" key={article.article_id}>
+              <Link
+                to={`/article/${article.article_id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <ArticleCard article={article} />
+              </Link>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 };

@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import ArticleList from "./components/ArticleList";
-import ArticleView from "./components/articleView";
+import SingleArticle from "./components/SingleArticle";
 import Footer from "./components/Footer";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/articles" element={<ArticleList />} />
-        <Route path="/article/:article_id" element={<ArticleView />} />
+        <Route path="/article/:article_id" element={<SingleArticle />} />
       </Routes>
       <Footer />
     </div>

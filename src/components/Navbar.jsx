@@ -23,14 +23,24 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li className="nav-item">
+            <li className="nav-item mx-2">
               <Link className="nav-link" to="/">
                 Home
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item mx-2">
               <Link className="nav-link" to="/articles">
                 Aritcles
+              </Link>
+            </li>
+            <li className="nav-item mx-2">
+              <Link className="nav-link" to="/topics">
+                Topics
+              </Link>
+            </li>
+            <li className="nav-item mx-2">
+              <Link className="nav-link" to="/users">
+                Users
               </Link>
             </li>
           </ul>
