@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-custom">
-      {" "}
-      {/* Change bg-dark to your custom class */}
       <div className="container">
         <Link className="navbar-brand" to="/">
           Northcoders News
@@ -30,13 +28,37 @@ const Navbar = () => {
             </li>
             <li className="nav-item mx-2">
               <Link className="nav-link" to="/articles">
-                Aritcles
+                Articles
               </Link>
             </li>
-            <li className="nav-item mx-2">
-              <Link className="nav-link" to="/topics">
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 Topics
-              </Link>
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <Link className="dropdown-item" to="/topics/coding">
+                    Coding
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/topics/cooking">
+                    Cooking
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/topics/football">
+                    Football
+                  </Link>
+                </li>
+              </ul>
             </li>
             <li className="nav-item mx-2">
               <Link className="nav-link" to="/users">

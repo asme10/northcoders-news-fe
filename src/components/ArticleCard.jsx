@@ -12,17 +12,20 @@ const ArticleCard = ({ article }) => {
     <div className="card h-100 shadow border-0 mx-4">
       <img
         src={article.article_img_url}
-        classNameName="card-img-top"
+        className="card-img-top"
         alt={article.title}
       />
       <div className="card-body p-2">
         <h4 className="card-text">{capitalizedTopic}</h4>
-        <p className="card-text ">{capitalizedTitle}</p>
+        <p className="card-text">{capitalizedTitle}</p>
         <p className="card-text">Comments: {article.comment_count}</p>
         <p className="card-text">Votes: {article.votes}</p>
-        <Link to={`/article/${article.article_id}`} className="btn btn-primary">
+        <a
+          href={`/article/${article.article_id}`}
+          className="btn btn-link btn-primary"
+        >
           Read More
-        </Link>
+        </a>
       </div>
 
       <hr style={{ border: "1px solid #000", width: "100%" }} />
