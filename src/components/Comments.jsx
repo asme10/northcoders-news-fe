@@ -9,7 +9,7 @@ const Comments = ({ comments }) => {
           <li className="list-group-item px-5" key={comment.comment_id}>
             <p>
               <strong>{comment.author}:</strong>
-            </p>
+            </p>    
             <p>{comment.body}</p>
           </li>
         ))}

@@ -5,7 +5,7 @@ import { getArticles } from "../api";
 
 const ArticleList = () => {
   const [articles, setArticles] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const ArticleList = () => {
         <div className="d-flex flex-wrap">
           {articles.map((article) => (
             <div className="col-md-4 mb-4" key={article.article_id}>
-              <Link
+              <Link   
                 to={`/article/${article.article_id}`}
                 style={{ textDecoration: "none" }}
               >
