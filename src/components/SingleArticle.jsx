@@ -4,7 +4,6 @@ import Navbar from "./Navbar";
 import { getArticles, getCommentsByArticleId, voteArticle } from "./../api";
 import VoteArticle from "./VoteArticle";
 import Comments from "./Comments";
-import CommentAdd from "./CommentAdd";
 
 const SingleArticle = () => {
   const { article_id } = useParams();

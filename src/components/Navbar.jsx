@@ -31,34 +31,10 @@ const Navbar = () => {
                 Articles
               </Link>
             </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+            <li className="nav-item mx-2">
+              <Link className="nav-link" to="/topics">
                 Topics
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <Link className="dropdown-item" to="/topics/coding">
-                    Coding
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/topics/cooking">
-                    Cooking
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/topics/football">
-                    Football
-                  </Link>
-                </li>
-              </ul>
+              </Link>
             </li>
             <li className="nav-item mx-2">
               <Link className="nav-link" to="/users">

@@ -1,33 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
 const ArticleCard = ({ article }) => {
   const formattedDate = new Date(article.created_at).toLocaleDateString();
   const capitalizedTopic =
     article.topic.charAt(0).toUpperCase() + article.topic.slice(1);
   const capitalizedTitle =
     article.title.charAt(0).toUpperCase() + article.title.slice(1);
+  console.log(capitalizedTopic);
 
   return (
-    <div className="card h-100 shadow border-0 mx-4">
+    <div className="card h-100 shadow border-0">
       <img
         src={article.article_img_url}
         className="card-img-top"
         alt={article.title}
       />
-      <div className="card-body p-2">
+      <div className="card-body pt-3 px-4">
         <h4 className="card-text">{capitalizedTopic}</h4>
         <p className="card-text ">{capitalizedTitle}</p>
         <p className="card-text">Comments: {article.comment_count}</p>
         <p className="card-text">Votes: {article.votes}</p>
-        <Link
-          to={`/article/${article.article_id}`}
-          style={{ textDecoration: "none" }}
-        >
-          <button>
-            <ArticleCard article={article} />
-          </button>
-        </Link>
+
+        <button className="btn btn-primary">Read More</button>
       </div>
 
       <hr style={{ border: "1px solid #000", width: "100%" }} />

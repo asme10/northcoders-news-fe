@@ -1,18 +1,16 @@
-// Home.js
 import React from "react";
-import Navbar from "./Navbar";
 import Header from "./Header";
 import SearchAll from "./SearchAll";
-import ArticleList from "./ArticleList";
 import LatestUpdate from "./LatestUpdate";
+import Articles from "./Articles";
 
 const Home = () => {
   return (
     <div>
       <Header />
-      <SearchAll />
+      <SearchAll /> /
       <LatestUpdate />
-      <ArticleList />
+      <Articles />
     </div>
   );
 };

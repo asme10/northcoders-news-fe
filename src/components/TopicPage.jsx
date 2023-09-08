@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getArticlesByTopic } from "../api";
-import ArticleCard from "./ArticleCard";
+// import React, { useEffect, useState } from "react";
+// import { useParams } from "react-router-dom";
+// import { getArticlesByTopic } from "../api";
+// import ArticleCard from "./ArticleCard";
 
-const TopicPage = () => {
-  const { topicSlug } = useParams();
-  const [topicArticles, setTopicArticles] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+// const TopicPage = () => {
+  // const { topicSlug } = useParams();
+  // const [topicArticles, setTopicArticles] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     getArticlesByTopic(topicSlug)
