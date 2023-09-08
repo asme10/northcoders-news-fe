@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ArticleCard from "./ArticleCard";
-import { getArticles } from "../api";
+import { getArticles, getCommentsByArticleId } from "./../api";
 
 const ArticleList = () => {
   const [articles, setArticles] = useState([]);
+  const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     getArticles()
-      .then((articles) => {
-        setArticles(articles);
+      .then((articlesData) => {
+        setArticles(articlesData);
         setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsError(true);
+        setIsLoading(false);
+      });
+
+    getCommentsByArticleId(1)
+      .then((commentsData) => {
+        setComments(commentsData);
       })
       .catch((err) => {
         setIsError(true);
@@ -34,11 +44,18 @@ const ArticleList = () => {
         <div className="d-flex flex-wrap">
           {articles.map((article) => (
             <div className="col-md-4 mb-4" key={article.article_id}>
-              <Link   
+              <Link
                 to={`/article/${article.article_id}`}
                 style={{ textDecoration: "none" }}
               >
-                <ArticleCard article={article} />
+                <ArticleCard
+                  article={article}
+                  votes={
+                    comments.find(
+                      (comment) => comment.article_id === article.article_id
+                    )?.votes || 0
+                  }
+                />
               </Link>
             </div>
           ))}

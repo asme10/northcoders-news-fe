@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
-import ArticleList from "./components/ArticleList";
 import SingleArticle from "./components/SingleArticle";
 import CommentAdd from "./components/CommentAdd";
 import Coding from "./components/Coding";
@@ -11,6 +10,7 @@ import Football from "./components/Football";
 import Cooking from "./components/Cooking";
 import Topics from "./components/Topics";
 import TopicPage from "./components/TopicPage";
+import Articles from "./components/Articles";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/articles" element={<ArticleList />} />
+        <Route path="/articles" element={<Articles />} />
         <Route path="/article/:article_id" element={<SingleArticle />} />
         <Route
           path="/article/:article_id/comment/add"

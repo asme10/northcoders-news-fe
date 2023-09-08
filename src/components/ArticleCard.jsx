@@ -17,15 +17,17 @@ const ArticleCard = ({ article }) => {
       />
       <div className="card-body p-2">
         <h4 className="card-text">{capitalizedTopic}</h4>
-        <p className="card-text">{capitalizedTitle}</p>
+        <p className="card-text ">{capitalizedTitle}</p>
         <p className="card-text">Comments: {article.comment_count}</p>
         <p className="card-text">Votes: {article.votes}</p>
-        <a
-          href={`/article/${article.article_id}`}
-          className="btn btn-link btn-primary"
+        <Link
+          to={`/article/${article.article_id}`}
+          style={{ textDecoration: "none" }}
         >
-          Read More
-        </a>
+          <button>
+            <ArticleCard article={article} />
+          </button>
+        </Link>
       </div>
 
       <hr style={{ border: "1px solid #000", width: "100%" }} />

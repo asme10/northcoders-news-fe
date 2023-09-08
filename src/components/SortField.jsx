@@ -17,16 +17,14 @@ const SortField = ({ onSortChange }) => {
 
   return (
     <div className="d-flex justify-content-center align-items-center">
-      <label style={{ width: "140px", fontWeight: "bold" }}>
-        Sort by:
-      </label>
+      <label style={{ width: "140px", fontWeight: "bold" }}>Sort by:</label>
       <select
         value={sortingOption}
         onChange={handleSortChange}
         className="form-select me-3"
         aria-label="Default select example"
       >
-        <option selected>View All</option>
+        <option value="date">View All</option>
         <option value="date">Date</option>
         <option value="comment_count">Comment Count</option>
         <option value="votes">Votes</option>

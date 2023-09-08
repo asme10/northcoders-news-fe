@@ -11,7 +11,7 @@ export const getArticles = () => {
 };
 
 export const getArticle = () => {
-  return api.get("/api/articles/${articleId}").then(({ data }) => {
+  return api.get(`/api/articles/${article_id}`).then(({ data }) => {
     return data.article;
   });
 };
@@ -40,7 +40,7 @@ export const getUser = (userName) => {
   });
 };
 
-export const VoteArticle = (articleId, direction) => {
+export const voteArticle = (articleId, direction) => {
   return api
     .get(`/api/articles/${articleId}?vote=${direction}`)
     .then(({ data }) => {
@@ -49,9 +49,9 @@ export const VoteArticle = (articleId, direction) => {
     .catch(console.log);
 };
 
-export const VoteComment = (articleId, direction) => {
+export const voteComment = (commentId, direction) => {
   return api
-    .get(`/api//comments/${commentId}?vote=${direction}`)
+    .get(`/api/comments/${commentId}?vote=${direction}`)
     .then(({ data }) => {
       return data.comment;
     })
@@ -67,21 +67,24 @@ export const postCommentToArticle = (articleId, body, userId) => {
     .then(({ data: { comment } }) => ({ comment }));
 };
 
-export const postArticle = (body, title, topicSlug, userId) => {
+export const postArticle = (body, title, topicSlug, author, articleImgUrl) => {
   return api
-    .post(`/api/articles/${topicSlug}/articles`, {
-      title,
+    .post("/api/articles", {
       body,
-      created_by: userId,
+      title,
+      topic: topicSlug,
+      author,
+      article_img_url: articleImgUrl,
     })
     .then(({ data: { article } }) => ({ article }));
 };
 
 export const deleteComment = (commentId) => {
-  return api.delete(`/api/articles/comments/${commentId}`).then((data) => {
+  return api.delete(`/api/comments/${commentId}`).then((data) => {
     return data.comment;
   });
 };
+
 export const fetchSortedArticles = (sortOption, sortOrder) => {
   return api
     .get(`/api/articles?sort_by=${sortOption}&order=${sortOrder}`)

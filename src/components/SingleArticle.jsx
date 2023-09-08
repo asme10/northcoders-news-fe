@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
-import { getArticles, getCommentsByArticleId } from "../api";
+import { getArticles, getCommentsByArticleId, voteArticle } from "./../api";
+import VoteArticle from "./VoteArticle";
 import Comments from "./Comments";
 import CommentAdd from "./CommentAdd";
 
@@ -12,6 +13,7 @@ const SingleArticle = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [articleVotes, setArticleVotes] = useState(0);
 
   useEffect(() => {
     getArticles()
@@ -21,6 +23,7 @@ const SingleArticle = () => {
         );
         if (foundArticle) {
           setArticle(foundArticle);
+          setArticleVotes(foundArticle.votes);
           setIsError(false);
         } else {
           setIsError(true);
@@ -43,6 +46,19 @@ const SingleArticle = () => {
 
   const toggleComments = () => {
     setShowComments(!showComments);
+  };
+
+  const handleVote = (direction) => {
+    if (article) {
+      voteArticle(article.article_id, direction)
+        .then((updatedArticle) => {
+          setArticle(updatedArticle);
+          setArticleVotes(updatedArticle.votes);
+        })
+        .catch((err) => {
+          console.error("Error voting:", err);
+        });
+    }
   };
 
   return (
@@ -104,15 +120,18 @@ const SingleArticle = () => {
                       {article.topic.charAt(0).toUpperCase() +
                         article.topic.slice(1)}
                     </p>
-                    <p>
-                      Votes: {article.votes}
-                      <button className="btn btn-primary ms-5">
-                        <i className="fa-solid fa-arrow-up"></i>
-                      </button>
-                      <button className="btn btn-danger ms-2">
-                        <i className="fa-solid fa-arrow-down"></i>
-                      </button>
-                    </p>
+                    <div className="d-block">
+                      <div>
+                        <p>Comments: {comments.length}</p>
+                      </div>
+                      <div className="py-4">
+                        <VoteArticle
+                          type="article"
+                          id={article.article_id}
+                          initialVotes={article.votes}
+                        />
+                      </div>
+                    </div>
                     <div className="comment-btn my-5 d-flex justify-content-between">
                       <button
                         className="btn btn-primary"

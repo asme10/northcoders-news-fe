@@ -32,11 +32,15 @@ const Topics = () => {
       ) : topics ? (
         <>
           <h2>Topics</h2>
-          <ul>
+          <ul className="list-group">
             {topics.map((topic) => (
-              <li key={topic.slug}>
-                <Link to={`/topics/${topic.slug}`}>{topic.slug}</Link>-
-                {topic.description}
+              <li className="list-group-item" key={topic.slug}>
+                <Link
+                  to={`/topics/${topic.slug}`}
+                  className="text-decoration-none"
+                >
+                  {topic.name}
+                </Link>
               </li>
             ))}
           </ul>
