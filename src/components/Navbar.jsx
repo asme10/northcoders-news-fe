@@ -36,11 +36,6 @@ const Navbar = () => {
                 Topics
               </Link>
             </li>
-            <li className="nav-item mx-2">
-              <Link className="nav-link" to="/users">
-                Users
-              </Link>
-            </li>
           </ul>
         </div>
       </div>

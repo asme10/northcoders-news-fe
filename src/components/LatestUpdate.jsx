@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { getLatestArticle, getLatestComment } from "../api";
 
 const LatestUpdate = () => {
   const [latestArticle, setLatestArticle] = useState(null);
   const [latestComment, setLatestComment] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("https://asme-nc-news-api.onrender.com/api/articles?limit=1")
-      .then(({ data }) => {
-        const [latest] = data.articles;
+    getLatestArticle()
+      .then((latest) => {
         setLatestArticle(latest);
-        axios
-          .get(
-            `https://asme-nc-news-api.onrender.com/api/articles/${latest.article_id}/comments`
-          )
-          .then(({ data }) => {
-            const [latestComment] = data.comments;
+        if (latest) {
+          getLatestComment(latest.article_id).then((latestComment) => {
             setLatestComment(latestComment);
           });
+        }
+      })
+      .catch((error) => {
+        console.error("The latest article is not found!", error);
       });
   }, []);
 
@@ -32,7 +31,7 @@ const LatestUpdate = () => {
 
       {latestArticle && (
         <div className="row gx-5 align-items-center justify-content-center">
-          <div className="col-xl-5 col-xxl-6 d-none d-xl-block text-center">
+          <div className="col-xl-5 col-xxl-6 d-xl-block text-center">
             <img
               className="img-fluid rounded-3 my-5"
               src={latestArticle.article_img_url}

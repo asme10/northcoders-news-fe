@@ -1,100 +1,88 @@
 import axios from "axios";
 
-export const getArticles = () => {
-  return axios
-    .get("https://asme-nc-news-api.onrender.com/api/articles")
-    .then(({ data }) => {
-      return data.articles;
-    });
-};
+const api = axios.create({
+  baseURL: "https://asme-nc-news-api.onrender.com",
+});
 
-export const getCommentsByArticleId = (article_id) => {
-  return axios
-    .get(
-      `https://asme-nc-news-api.onrender.com/api/articles/${article_id}/comments`
-    )
-    .then(({ data }) => {
-      return data.comments;
-    });
-};
+export const getArticles = (topic, sortBy, order) => {
+  const params = {
+    topic,
+    sort_by: sortBy,
+    order,
+  };
 
-// export const getArticle = () => {
-//   return api.get(`/api/articles/${article_id}`).then(({ data }) => {
-//     return data.article;
-//   });
-// };
-
-// export const getArticlesByTopic = (topicSlug) => {
-//   return api.get(`/api/topics/${topicSlug}/articles`).then(({ data }) => {
-//     return data.articles;
-//   });
-// };
-
-// export const getCommentsByArticleId = (article_id) => {
-//   return api.get(`/api/articles/${article_id}/comments`).then(({ data }) => {
-//     return data.comments;
-//   });
-// };
-
-// export const getTopics = () => {
-//   return api.get("/api/topics").then(({ data }) => {
-//     return data.topics;
-//   });
-// };
-
-// export const getUser = (userName) => {
-//   return api.get(`/api/users/${userName}`).then(({ data }) => {
-//     return data.user;
-//   });
-// };
-
-export const voteArticle = (articleId, direction) => {
-  return api
-    .get(`/api/articles/${articleId}?vote=${direction}`)
-    .then(({ data }) => {
-      return data.article;
-    })
-    .catch(console.log);
-};
-
-export const voteComment = (commentId, direction) => {
-  return api
-    .get(`/api/comments/${commentId}?vote=${direction}`)
-    .then(({ data }) => {
-      return data.comment;
-    })
-    .catch(console.log);
-};
-
-export const postCommentToArticle = ({ articleId }, newComment, user) => {
-  return api.post(`/api/articles/${articleId}/comment`, {
-    body: newComment,
-    username: user,
+  return api.get("/api/articles", { params }).then(({ data }) => {
+    return data.articles;
   });
 };
 
-// export const postArticle = (body, title, topicSlug, author, articleImgUrl) => {
-//   return api
-//     .post("/api/articles", {
-//       body,
-//       title,
-//       topic: topicSlug,
-//       author,
-//       article_img_url: articleImgUrl,
-//     })
-//     .then(({ data: { article } }) => ({ article }));
-// };
+export const getTopics = () => {
+  return api.get("/api/topics").then(({ data }) => {
+    return data.topics;
+  });
+};
 
-// export const deleteComment = (commentId) => {
-//   return api.delete(`/api/comments/${commentId}`).then((data) => {
-//     return data.comment;
-//   });
-// };
+export const fetchArticlesFromTopic = (topic = null) => {
+  const apiUrl = topic
+    ? `https://asme-nc-news-api.onrender.com/api/topics/${topic}/articles`
+    : "https://asme-nc-news-api.onrender.com/api/articles";
 
-// export const fetchSortedArticles = (sortOption, sortOrder) => {
-//   return api
-//     .get(`/api/articles?sort_by=${sortOption}&order=${sortOrder}`)
-//     .then(({ data }) => {
-//       return data.articles;
-//     });
-// };
+  return axios.get(apiUrl).then((response) => response.data.articles);
+};
+
+export const fetchArticles = (topic = null) => {
+  const apiUrl = topic
+    ? `https://asme-nc-news-api.onrender.com/api/articles?topic=${topic}`
+    : "https://asme-nc-news-api.onrender.com/api/articles";
+
+  return axios.get(apiUrl).then((response) => response.data.articles);
+};
+
+export const getArticleById = (articleId) => {
+  return api.get(`/api/articles/${articleId}`).then(({ data }) => {
+    return data.article;
+  });
+};
+
+export const getCommentsByArticleId = (articleId) => {
+  return api.get(`/api/articles/${articleId}/comments`).then(({ data }) => {
+    return data.comments;
+  });
+};
+
+export const getLatestArticle = () => {
+  return api.get("/api/articles/?limit=1").then(({ data }) => {
+    const [latest] = data.articles;
+    return latest;
+  });
+};
+
+export const getLatestComment = (articleId) => {
+  return api.get(`/api/articles/${articleId}/comments`).then(({ data }) => {
+    const [latestComment] = data.comments;
+    return latestComment;
+  });
+};
+
+export const postVoteArticle = (articleId, voteType) => {
+  return api
+    .patch(`/api/articles/${articleId}`, {
+      inc_votes: voteType === "upvote" ? 1 : -1,
+    })
+    .then(({ data }) => {
+      return data.article.votes;
+    });
+};
+
+export const postNewComment = (articleId, commentText, username) => {
+  const newComment = {
+    article_id: articleId,
+    author: username,
+    body: commentText,
+  };
+  return api
+    .post(`/api/articles/${articleId}/comments`, newComment)
+    .then(({ data }) => {
+      return data.comment;
+    });
+};

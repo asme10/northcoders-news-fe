@@ -4,10 +4,9 @@ const ArticleCard = ({ article }) => {
     article.topic.charAt(0).toUpperCase() + article.topic.slice(1);
   const capitalizedTitle =
     article.title.charAt(0).toUpperCase() + article.title.slice(1);
-  console.log(capitalizedTopic);
 
   return (
-    <div className="card h-100 shadow border-0">
+    <div className="card h-100 shadow border-0 mx-2">
       <img
         src={article.article_img_url}
         className="card-img-top"

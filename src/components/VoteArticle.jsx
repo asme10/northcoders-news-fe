@@ -1,53 +1,54 @@
 import React, { useState } from "react";
-import { voteArticle, voteComment } from "./../api";
+import { postVoteArticle } from "./../api";
 
-const VoteArticle = ({ type, id, initialVotes }) => {
+const VoteArticle = ({ articleId, initialVotes, onVote }) => {
   const [votes, setVotes] = useState(initialVotes);
-  const [voted, setVoted] = useState(null);
+  const [isVoting, setIsVoting] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
-  const handleVote = (direction) => {
-    if (voted === direction) {
-      direction = "unvote";
-      setVoted(null);
-    } else {
-    }
+  const handleVote = (voteType) => {
+    if (isVoting) return;
+    setIsVoting(true);
 
-    if (type === "article") {
-      voteArticle(id, direction)
-        .then((updatedVotes) => {
-          setVotes(updatedVotes);
-        })
-        .catch((err) => {
-          console.error("Error voting on article:", err);
-        });
-    } else if (type === "comment") {
-      voteComment(id, direction)
-        .then((updatedVotes) => {
-          setVotes(updatedVotes);
-        })
-        .catch((err) => {
-          console.error("Error voting on comment:", err);
-        });
-    }
+    postVoteArticle(articleId, voteType)
+      .then((newVote) => {
+        setVotes(newVote);
+        setIsVoting(false);
+        onVote(newVote);
+      })
+      .catch((error) => {
+        setHasError(true);
+        setIsVoting(false);
+        console.error("Voting failed:", error);
+      });
   };
 
   return (
     <div>
-      <p>
-        Votes: {votes}
+      {hasError && (
+        <div className="alert alert-danger mx-5" role="alert">
+          Voting failed. Please try again later.
+        </div>
+      )}
+
+      <div className="likes" style={{ marginTop: "8px" }}>
         <button
-          className={`btn btn-primary ms-2 ${voted === "up" ? "active" : ""}`}
-          onClick={() => handleVote("up")}
+          type="button"
+          className="btn btn-outline-primary py-1 me-2 "
+          onClick={() => handleVote("downvote")}
+          disabled={isVoting}
         >
-          Upvote
+          <i className="fas fa-thumbs-down"></i>
         </button>
         <button
-          className={`btn btn-danger ms-2 ${voted === "down" ? "active" : ""}`}
-          onClick={() => handleVote("down")}
+          type="button"
+          class="btn btn-outline-success py-1"
+          onClick={() => handleVote("upvote")}
+          disabled={isVoting}
         >
-          Downvote
+          <i className="fas fa-thumbs-up"></i>
         </button>
-      </p>
+      </div>
     </div>
   );
 };

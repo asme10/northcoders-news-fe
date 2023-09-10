@@ -1,159 +1,151 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import Navbar from "./Navbar";
-import { getArticles, getCommentsByArticleId, voteArticle } from "./../api";
+import CommentAdd from "./CommentAdd";
+import { getArticleById, getCommentsByArticleId } from "./../api";
 import VoteArticle from "./VoteArticle";
-import Comments from "./Comments";
 
 const SingleArticle = () => {
-  const { article_id } = useParams();
+  const { articleId } = useParams();
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [showComments, setShowComments] = useState(false);
-  const [articleVotes, setArticleVotes] = useState(0);
 
   useEffect(() => {
-    getArticles()
-      .then((articles) => {
-        const foundArticle = articles.find(
-          (article) => article.article_id === +article_id
-        );
-        if (foundArticle) {
-          setArticle(foundArticle);
-          setArticleVotes(foundArticle.votes);
-          setIsError(false);
-        } else {
-          setIsError(true);
+    getArticleById(articleId)
+      .then((article) => {
+        setArticle(article);
+        setIsLoading(false);
+        if (article) {
+          getCommentsByArticleId(article.article_id).then((comments) => {
+            setComments(comments);
+          });
         }
-        setIsLoading(false);
       })
-      .catch((err) => {
+      .catch((error) => {
         setIsError(true);
         setIsLoading(false);
       });
+  }, [articleId]);
 
-    getCommentsByArticleId(article_id)
-      .then((comments) => {
-        setComments(comments);
-      })
-      .catch((err) => {
-        setIsError(true);
-      });
-  }, [article_id]);
-
-  const toggleComments = () => {
-    setShowComments(!showComments);
+  const handleVote = (newVote) => {
+    setArticle((prevArticle) => ({
+      ...prevArticle,
+      votes: newVote,
+    }));
   };
 
-  const handleVote = (direction) => {
-    if (article) {
-      voteArticle(article.article_id, direction)
-        .then((updatedArticle) => {
-          setArticle(updatedArticle);
-          setArticleVotes(updatedArticle.votes);
-        })
-        .catch((err) => {
-          console.error("Error voting:", err);
-        });
-    }
+  const handleNewComment = (newComment) => {
+    setComments((prevComments) => [...prevComments, newComment]);
   };
+
+  if (isLoading) {
+    return (
+      <div className="alert alert-success mx-5" role="alert">
+        Loading...
+      </div>
+    );
+  } else if (isError) {
+    return (
+      <div className="alert alert-danger mx-5" role="alert">
+        Error: Failed to load article. Please try again later.
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <Navbar />
-
-      <div
-        className="container my-5 py-5"
-        style={{
-          paddingTop: "8rem",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-          borderRadius: "5px",
-        }}
-      >
-        <div className="row">
-          <div className="col">
-            {isLoading && (
-              <div className="alert alert-success" role="alert">
-                <p>Loading...</p>
-              </div>
-            )}
-
-            {isError && (
-              <div className="alert alert-danger" role="alert">
-                <p>Oops, something went wrong!</p>
-              </div>
-            )}
-
-            {!isLoading && !isError && !article && (
-              <div className="alert alert-danger" role="alert">
-                <p>Article not found!</p>
-              </div>
-            )}
-
-            {article && (
-              <>
-                <h1
-                  style={{
-                    maxWidth: "800px",
-                    textAlign: "center",
-                    margin: "5px auto",
-                  }}
-                >
-                  {article.title}
-                </h1>
-                <div
-                  className="card"
-                  style={{ width: "65%", margin: "10px auto" }}
-                >
-                  <img src={article.article_img_url} alt={article.title} />
-                  <div className="card-body pt-4">
-                    <h5>By {article.author} </h5>
-                    <span>
-                      Date: {new Date(article.created_at).toLocaleString()}
-                    </span>
-                    <hr style={{ border: "1px solid #000", width: "60px" }} />
-                    <p>{article.body}</p>
-                    <p>
-                      {article.topic.charAt(0).toUpperCase() +
-                        article.topic.slice(1)}
-                    </p>
-                    <div className="d-block">
-                      <div>
-                        <p>Comments: {comments.length}</p>
-                      </div>
-                      <div className="py-4">
-                        <VoteArticle
-                          type="article"
-                          id={article.article_id}
-                          initialVotes={article.votes}
-                        />
-                      </div>
-                    </div>
-                    <div className="comment-btn my-5 d-flex justify-content-between">
-                      <button
-                        className="btn btn-primary"
-                        onClick={toggleComments}
-                      >
-                        {showComments ? "Hide Comments" : "Show Comments"}
-                      </button>
-                      <Link
-                        to={`/article/${article_id}/comment/add`}
-                        className="btn btn-success"
-                      >
-                        Add comment
-                      </Link>
-                    </div>
-                  </div>
-                  {showComments && <Comments comments={comments} />}
-                </div>
-              </>
-            )}
+    <section>
+      <div className="card" style={{ maxWidth: "45rem", margin: "6rem auto" }}>
+        <div className="card-body">
+          <div className="d-flex mb-3">
+            <img
+              src={article.article_img_url}
+              alt={article.topic}
+              className="border rounded-circle me-3"
+              style={{ height: "50px", width: "50px", borderRadius: "50%" }}
+            />
+            <div>
+              <strong>{article.author}</strong> <br />
+              <small>{new Date(article.created_at).toLocaleDateString()}</small>
+            </div>
+          </div>
+          <div>
+            <p>{article.body}</p>
           </div>
         </div>
+        <div className="bg-image hover-overlay ripple rounded-0">
+          <img
+            src={article.article_img_url}
+            alt={article.topic}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div className="card-body">
+          <div className="d-flex justify-content-between mb-3">
+            <div>
+              <i className="fas fa-thumbs-up text-primary me-3"></i>
+              <i className="fas fa-heart text-danger me-3"></i>
+              <span style={{ color: "blue" }}>{article.votes}</span>
+            </div>
+            <div>
+              <p> {article.comment_count} comments</p>
+            </div>
+          </div>
+
+          <div className="d-flex justify-content-between text-center border-top border-bottom mb-4">
+            <VoteArticle
+              articleId={article.article_id}
+              initialVotes={article.votes}
+              onVote={handleVote}
+            />
+
+            <button
+              type="button"
+              className="btn btn-lg"
+              style={{ color: "blue" }}
+            >
+              <i className="fas fa-comment-alt me-2"></i>Comment
+            </button>
+            <button
+              type="button"
+              className="btn btn-lg"
+              style={{ color: "blue" }}
+            >
+              <i className="fas fa-share me-2"></i>Share
+            </button>
+          </div>
+
+          {comments.map((comment) => (
+            <div className="d-flex" key={comment.comment_id}>
+              <img
+                src={article.article_img_url}
+                alt={article.topic}
+                className="border rounded-circle me-3"
+                style={{ height: "50px", width: "50px", borderRadius: "50%" }}
+              />
+              <div>
+                <p className="text-dark mb-0">
+                  <strong>{comment.author}</strong>
+                </p>
+                <p className="text-muted d-block">
+                  <small>{comment.body}</small>
+                </p>
+              </div>
+            </div>
+          ))}
+          <CommentAdd
+            articleId={article.article_id}
+            onCommentSubmit={handleNewComment}
+          />
+
+          <Link to="/articles">
+            <button className="btn btn-outline-secondary py-2 mt-5">
+              Back to Articles
+            </button>
+          </Link>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
