@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <SearchAll /> 
+      <SearchAll />
       <LatestUpdate />
       <Articles />
     </div>

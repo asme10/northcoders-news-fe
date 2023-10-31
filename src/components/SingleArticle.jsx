@@ -10,6 +10,8 @@ const SingleArticle = () => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [viewAllComments, setViewAllComments] = useState(false);
+  const [isCommentAddVisible, setIsCommentAddVisible] = useState(false);
 
   useEffect(() => {
     getArticleById(articleId)
@@ -39,6 +41,16 @@ const SingleArticle = () => {
     setComments((prevComments) => [...prevComments, newComment]);
   };
 
+  const toggleViewAllComments = () => {
+    setViewAllComments(!viewAllComments);
+  };
+
+  const toggleAddComment = () => {
+    setIsCommentAddVisible(!isCommentAddVisible);
+  };
+
+  const displayedComments = viewAllComments ? comments : comments.slice(0, 1);
+
   if (isLoading) {
     return (
       <div className="alert alert-success mx-5" role="alert">
@@ -55,7 +67,21 @@ const SingleArticle = () => {
 
   return (
     <section>
-      <div className="card" style={{ maxWidth: "45rem", margin: "6rem auto" }}>
+      <div
+        className="card border-top"
+        style={{
+          maxWidth: "50rem",
+          margin: "6rem auto",
+        }}
+      >
+        <img
+          src={article.article_img_url}
+          alt={article.topic}
+          style={{
+            borderTopLeftRadius: "5px",
+            borderTopRightRadius: "5px",
+          }}
+        />
         <div className="card-body">
           <div className="d-flex mb-3">
             <img
@@ -72,13 +98,6 @@ const SingleArticle = () => {
           <div>
             <p>{article.body}</p>
           </div>
-        </div>
-        <div className="bg-image hover-overlay ripple rounded-0">
-          <img
-            src={article.article_img_url}
-            alt={article.topic}
-            style={{ width: "100%" }}
-          />
         </div>
         <div className="card-body">
           <div className="d-flex justify-content-between mb-3">
@@ -103,6 +122,7 @@ const SingleArticle = () => {
               type="button"
               className="btn btn-lg"
               style={{ color: "blue" }}
+              onClick={toggleAddComment}
             >
               <i className="fas fa-comment-alt me-2"></i>Comment
             </button>
@@ -115,7 +135,7 @@ const SingleArticle = () => {
             </button>
           </div>
 
-          {comments.map((comment) => (
+          {displayedComments.map((comment) => (
             <div className="d-flex" key={comment.comment_id}>
               <img
                 src={article.article_img_url}
@@ -133,16 +153,20 @@ const SingleArticle = () => {
               </div>
             </div>
           ))}
-          <CommentAdd
-            articleId={article.article_id}
-            onCommentSubmit={handleNewComment}
-          />
-
-          <Link to="/articles">
-            <button className="btn btn-outline-secondary py-2 mt-5">
-              Back to Articles
+          {comments.length > 1 && (
+            <button
+              className="btn btn-outline-primary py-1 mb-2"
+              onClick={toggleViewAllComments}
+            >
+              {viewAllComments ? "View Less" : "View More"}
             </button>
-          </Link>
+          )}
+          {isCommentAddVisible && (
+            <CommentAdd
+              articleId={article.article_id}
+              onCommentSubmit={handleNewComment}
+            />
+          )}
         </div>
       </div>
     </section>

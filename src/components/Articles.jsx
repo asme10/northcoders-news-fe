@@ -28,9 +28,9 @@ const Articles = () => {
     const compareFunction = (a, b) => {
       const factor = sortingOrder === "asc" ? 1 : -1;
       if (sortingOption === "date") {
-        return factor * (new Date(a.published_at) - new Date(b.published_at));
+        return factor * (new Date(a.created_at) - new Date(b.created_at));
       } else if (sortingOption === "comment_count") {
-        return factor * (a.commentCount - b.commentCount);
+        return factor * (a.comment_count - b.comment_count);
       } else if (sortingOption === "votes") {
         return factor * (a.votes - b.votes);
       }
@@ -60,19 +60,17 @@ const Articles = () => {
     );
   }
   return (
-    <section>
-      <div className="container" style={{ paddingTop: "6rem" }}>
-        <div className="row">
-          <div className="col-12">
-            <h1 className="mb-4 text-center">All Articles</h1>
+    <section style={{ paddingTop: "4rem" }}>
+      <div className="container">
+        <div className="row mt-5 px-3">
+          <div className="col-md-4">
+            <h1>All Article</h1>
+          </div>
+          <div className="col-md-4 offset-md-4">
+            <SortField onSortChange={handleSortChange} />
           </div>
         </div>
-        <div className="row">
-          <div className="col-12 d-flex justify-content-end my-4">
-            <SortField onSortChange={handleSortChange} className="ml-auto" />
-          </div>
-        </div>
-        <div className="row">
+        <div className="row pt-4">
           {articles.map((article) => (
             <div className="col-md-4 mb-4" key={article.article_id}>
               <Link

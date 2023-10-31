@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import TopicArticles from "./TopicArticles";
+import { getArticles } from "./../api";
+import ArticleCard from "./ArticleCard";
 
 const Topics = () => {
-  const topics = ["Coding", "Football", "Cooking"];
+  const [articles, setArticles] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
 
-  const handleTopic = (topic) => {
-    setSelectedTopic(topic);
+  useEffect(() => {
+    fetchArticlesByTopic(selectedTopic);
+  }, [selectedTopic]);
+
+  const fetchArticlesByTopic = (topic) => {
+    getArticles(topic)
+      .then((fetchedArticles) => {
+        setArticles(fetchedArticles);
+      })
+      .catch((error) => {
+        console.error("Error fetching articles:", error);
+      });
+  };
+
+  const handleSelectedTopic = (e) => {
+    const selectedSlug = e.target.value;
+    setSelectedTopic(selectedSlug);
   };
 
   return (
@@ -18,28 +34,41 @@ const Topics = () => {
             <h1 className="mb-4 text-center mt-5">All Topics</h1>
           </div>
         </div>
-        <div className="row">
-          {topics.map((topic, index) => (
-            <div className="col-md-4 mb-4" key={topic}>
-              <div
-                className={`card bg-${index % 2 === 0 ? "primary" : "success"}`}
-              >
-                <div className="card-body text-center">
-                  <h5 className="card-title">
-                    <Link
-                      to={`/topics`}
-                      className="text-decoration-none text-white"
-                      onClick={() => handleTopic(topic)}
-                    >
-                      {topic}
-                    </Link>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="row mb-4">
+          <div className="col-md-6 offset-md-3 col-12 px-3">
+            <select
+              className="form-select"
+              aria-label="Default select example"
+              value={selectedTopic}
+              onChange={handleSelectedTopic}
+            >
+              <option selected disabled>
+                Select Topic
+              </option>
+              <option value="coding">Coding</option>
+              <option value="football">Football</option>
+              <option value="cooking">Cooking</option>
+            </select>
+          </div>
         </div>
-        <TopicArticles />
+      </div>
+      <div className="container">
+        <div className="row">
+          {articles
+            .filter(
+              (article) => !selectedTopic || article.topic === selectedTopic
+            )
+            .map((article) => (
+              <div className="col-md-4 mb-4" key={article.article_id}>
+                <Link
+                  to={`/article/${article.article_id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <ArticleCard article={article} />
+                </Link>
+              </div>
+            ))}
+        </div>
       </div>
     </section>
   );

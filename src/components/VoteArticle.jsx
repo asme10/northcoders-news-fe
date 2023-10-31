@@ -42,7 +42,7 @@ const VoteArticle = ({ articleId, initialVotes, onVote }) => {
         </button>
         <button
           type="button"
-          class="btn btn-outline-success py-1"
+          className="btn btn-outline-success py-1"
           onClick={() => handleVote("upvote")}
           disabled={isVoting}
         >

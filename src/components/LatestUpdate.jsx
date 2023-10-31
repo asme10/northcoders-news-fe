@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { getLatestArticle, getLatestComment } from "../api";
 
@@ -22,9 +23,9 @@ const LatestUpdate = () => {
   }, []);
 
   return (
-    <div className="container px-5">
+    <div className="container px-3">
       {latestArticle && (
-        <div className="d-flex justify-content-between align-items-center mt-2">
+        <div className="d-flex justify-content-between align-items-center">
           <h2>Latest updates</h2>
         </div>
       )}
@@ -32,12 +33,15 @@ const LatestUpdate = () => {
       {latestArticle && (
         <div className="row gx-5 align-items-center justify-content-center">
           <div className="col-xl-5 col-xxl-6 d-xl-block text-center">
-            <img
-              className="img-fluid rounded-3 my-5"
-              src={latestArticle.article_img_url}
-              alt="Latest Article"
-            />
+            <Link to={`/article/${latestArticle.article_id}`}>
+              <img
+                className="img-fluid rounded-3 my-5"
+                src={latestArticle.article_img_url}
+                alt="Latest Article"
+              />
+            </Link>
           </div>
+
           <div className="col-lg-8 col-xl-7 col-xxl-6">
             <div className="my-5 text-center text-xl-start">
               <h2 className="display-5">{latestArticle.title}</h2>
@@ -51,12 +55,12 @@ const LatestUpdate = () => {
               </p>
               <h5 className="mb-3">{latestArticle.topic}</h5>
               <div className="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                <a
+                <Link
                   className="btn btn-outline-primary btn-lg px-4"
-                  href={`/article/${latestArticle.article_id}`}
+                  to={`/article/${latestArticle.article_id}`}
                 >
                   Learn More
-                </a>
+                </Link>
               </div>
             </div>
           </div>

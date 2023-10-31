@@ -1,40 +1,41 @@
 import React, { useState } from "react";
 
 const SortField = ({ onSortChange }) => {
-  const [sortingOption, setSortingOption] = useState("date");
-  const [sortingOrder, setSortingOrder] = useState("desc");
+  const [selectedOption, setSelectedOption] = useState("sort_by");
+  const [sortOrder, setSortOrder] = useState("asc");
 
-  const handleSortChange = (event) => {
-    const newSortingOption = event.target.value;
-    setSortingOption(newSortingOption);
-    onSortChange(newSortingOption, sortingOrder);
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+    onSortChange(event.target.value, sortOrder);
   };
 
-  const toggleSortingOrder = () => {
-    const newSortingOrder = sortingOrder === "asc" ? "desc" : "asc";
-    setSortingOrder(newSortingOrder);
-    onSortChange(sortingOption, newSortingOrder);
+  const toggleSortOrder = () => {
+    const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(newSortOrder);
+    onSortChange(selectedOption, newSortOrder);
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center">
-      <label style={{ width: "140px", fontWeight: "bold" }}>Sort by:</label>
+    <div className="d-flex">
       <select
-        value={sortingOption}
-        onChange={handleSortChange}
-        className="form-select me-3"
+        className="form-select"
         aria-label="Default select example"
+        value={selectedOption}
+        onChange={handleOptionChange}
       >
+        <option value="sort_by" disabled>
+          Sort by
+        </option>
+        <option value="comment_count">Comments</option>
         <option value="date">Date</option>
-        <option value="comment_count">Comment Count</option>
         <option value="votes">Votes</option>
       </select>
       <button
         type="button"
-        className="btn btn-secondary"
-        onClick={toggleSortingOrder}
+        className="btn btn-info text-white ms-2"
+        onClick={toggleSortOrder}
       >
-        {sortingOrder === "asc" ? "Ascending" : "Descending"}
+        {sortOrder === "asc" ? "Ascending" : "Descending"}
       </button>
     </div>
   );

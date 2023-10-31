@@ -45,7 +45,9 @@ const CommentAdd = ({ articleId, onCommentSubmit }) => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username" className="mb-2">
+            Username:
+          </label>
           <input
             type="text"
             id="username"
@@ -56,7 +58,9 @@ const CommentAdd = ({ articleId, onCommentSubmit }) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="commentText">Add a Comment:</label>
+          <label htmlFor="commentText" className="my-2">
+            Add a Comment:
+          </label>
           <textarea
             id="commentText"
             className="form-control"
@@ -68,7 +72,7 @@ const CommentAdd = ({ articleId, onCommentSubmit }) => {
         </div>
         <button
           type="submit"
-          className="btn btn-success my-2"
+          className="btn btn-success my-3"
           disabled={isSubmitting}
           style={{ float: "right  " }}
         >

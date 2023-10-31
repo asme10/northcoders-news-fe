@@ -22,22 +22,6 @@ export const getTopics = () => {
   });
 };
 
-export const fetchArticlesFromTopic = (topic = null) => {
-  const apiUrl = topic
-    ? `https://asme-nc-news-api.onrender.com/api/topics/${topic}/articles`
-    : "https://asme-nc-news-api.onrender.com/api/articles";
-
-  return axios.get(apiUrl).then((response) => response.data.articles);
-};
-
-export const fetchArticles = (topic = null) => {
-  const apiUrl = topic
-    ? `https://asme-nc-news-api.onrender.com/api/articles?topic=${topic}`
-    : "https://asme-nc-news-api.onrender.com/api/articles";
-
-  return axios.get(apiUrl).then((response) => response.data.articles);
-};
-
 export const getArticleById = (articleId) => {
   return api.get(`/api/articles/${articleId}`).then(({ data }) => {
     return data.article;

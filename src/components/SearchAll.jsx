@@ -29,7 +29,7 @@ const SearchAll = () => {
 
   return (
     <>
-      <div className="container px-5 mt-5 mb-4">
+      <div className="container px-3 mt-5 mb-2">
         <div className="row">
           <div className="col">
             <h2 className="search-title text-start">Search News</h2>
@@ -51,7 +51,7 @@ const SearchAll = () => {
           </div>
         </div>
       </div>
-      <div className="container px-3 mt-5 mb-4">
+      <div className="container px-3 mt-4">
         <div className="row">
           <div className="col">
             {isLoading ? (
